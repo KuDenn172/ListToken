@@ -1,5 +1,5 @@
 export const getTokenListUrl = chainId => {
-  switch (chainId) {
+   switch (Number(chainId)) {
     case 1:
       return 'https://tokens.coingecko.com/ethereum/all.json';
     case 56:
@@ -50,9 +50,13 @@ export const getTokenListUrl = chainId => {
       return 'https://tokens.coingecko.com/moonbeam/all.json';
     case 534352:
       return 'https://tokens.coingecko.com/scroll/all.json';
+    case 34443:
+      return 'https://tokens.coingecko.com/mode/all.json';
     case 4080:
       return 'https://testnet.tobescan.com/api/v2/tokens';
+    case 7000:
+      return 'https://tokens.coingecko.com/zetachain/all.json';
     default:
-      return '';
+      return `https://tokens.coingecko.com/${name}/all.json`;
   }
 };
