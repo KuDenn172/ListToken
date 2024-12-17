@@ -1,5 +1,12 @@
-export const getTokenListUrl = chainId => {
-   switch (Number(chainId)) {
+import {getAssetPlatforms} from '~/api/common';
+import useNetworkStore from '~/hooks/store/useNetworkStore';
+
+export const getTokenListUrl = async () => {
+  const {currentNetwork} = useNetworkStore.getState();
+
+  const chainId = currentNetwork?.chain_id;
+
+  switch (Number(chainId)) {
     case 1:
       return 'https://tokens.coingecko.com/ethereum/all.json';
     case 56:
@@ -57,6 +64,15 @@ export const getTokenListUrl = chainId => {
     case 7000:
       return 'https://tokens.coingecko.com/zetachain/all.json';
     default:
-      return `https://tokens.coingecko.com/${name}/all.json`;
+      const platforms = await getAssetPlatforms();
+
+      const platformId = platforms.find(
+        platform => platform.chain_identifier === Number(chainId),
+      )?.id;
+
+      return platformId
+        ? `https://tokens.coingecko.com/${platformId}/all.json`
+        : null;
   }
 };
+// url platforms : https://api.coingecko.com/api/v3/asset_platforms
